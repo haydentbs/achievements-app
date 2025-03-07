@@ -10,20 +10,26 @@ import * as $api_auth_register from "./routes/api/auth/register.ts";
 import * as $api_db_index from "./routes/api/db/index.ts";
 import * as $api_index from "./routes/api/index.ts";
 import * as $api_milestones_index from "./routes/api/milestones/index.ts";
+import * as $api_users_password from "./routes/api/users/password.ts";
+import * as $api_users_profile from "./routes/api/users/profile.ts";
 import * as $community from "./routes/community.tsx";
 import * as $dashboard from "./routes/dashboard.tsx";
 import * as $goals from "./routes/goals.tsx";
 import * as $index from "./routes/index.tsx";
 import * as $login from "./routes/login.tsx";
+import * as $profile from "./routes/profile.tsx";
 import * as $register from "./routes/register.tsx";
 import * as $AuthContext from "./islands/AuthContext.tsx";
+import * as $ChangePasswordForm from "./islands/ChangePasswordForm.tsx";
 import * as $FeedTabs from "./islands/FeedTabs.tsx";
 import * as $HomeRedirect from "./islands/HomeRedirect.tsx";
 import * as $LoginForm from "./islands/LoginForm.tsx";
 import * as $LoginRedirect from "./islands/LoginRedirect.tsx";
 import * as $Navbar from "./islands/Navbar.tsx";
+import * as $ProfileForm from "./islands/ProfileForm.tsx";
 import * as $ProtectedRoute from "./islands/ProtectedRoute.tsx";
 import * as $RegisterForm from "./islands/RegisterForm.tsx";
+import * as $SecuritySection from "./islands/SecuritySection.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -36,22 +42,28 @@ const manifest = {
     "./routes/api/db/index.ts": $api_db_index,
     "./routes/api/index.ts": $api_index,
     "./routes/api/milestones/index.ts": $api_milestones_index,
+    "./routes/api/users/password.ts": $api_users_password,
+    "./routes/api/users/profile.ts": $api_users_profile,
     "./routes/community.tsx": $community,
     "./routes/dashboard.tsx": $dashboard,
     "./routes/goals.tsx": $goals,
     "./routes/index.tsx": $index,
     "./routes/login.tsx": $login,
+    "./routes/profile.tsx": $profile,
     "./routes/register.tsx": $register,
   },
   islands: {
     "./islands/AuthContext.tsx": $AuthContext,
+    "./islands/ChangePasswordForm.tsx": $ChangePasswordForm,
     "./islands/FeedTabs.tsx": $FeedTabs,
     "./islands/HomeRedirect.tsx": $HomeRedirect,
     "./islands/LoginForm.tsx": $LoginForm,
     "./islands/LoginRedirect.tsx": $LoginRedirect,
     "./islands/Navbar.tsx": $Navbar,
+    "./islands/ProfileForm.tsx": $ProfileForm,
     "./islands/ProtectedRoute.tsx": $ProtectedRoute,
     "./islands/RegisterForm.tsx": $RegisterForm,
+    "./islands/SecuritySection.tsx": $SecuritySection,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;

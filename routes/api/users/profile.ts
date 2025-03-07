@@ -146,7 +146,10 @@ export const handler: Handlers = {
       }
       
       // Verify the token
+      console.log("Verifying token...");
       const payload = await verifyToken(token);
+      console.log("Token verification result:", !!payload);
+      
       if (!payload || !payload.sub) {
         return new Response(JSON.stringify({ message: "Invalid token" }), {
           status: 401,
@@ -155,9 +158,12 @@ export const handler: Handlers = {
       }
       
       const userId = payload.sub;
+      console.log("User ID from token:", userId);
       
       // Parse the request body
       const body = await req.json();
+      console.log("Request body:", body);
+      
       const updateData: UpdateUserInput = {
         full_name: body.full_name,
         bio: body.bio,
@@ -165,8 +171,12 @@ export const handler: Handlers = {
       };
       
       // Update the user in the database
+      console.log("Connecting to database...");
       const client = await pool.connect();
+      console.log("Connected to database");
+      
       try {
+        console.log("Executing update query...");
         const result = await client.queryObject<{
           id: string;
           username: string;
@@ -187,6 +197,8 @@ export const handler: Handlers = {
           ]
         );
         
+        console.log("Query executed, rows affected:", result.rowCount);
+        
         if (result.rowCount === 0) {
           return new Response(JSON.stringify({ message: "User not found" }), {
             status: 404,
@@ -195,6 +207,7 @@ export const handler: Handlers = {
         }
         
         const user = result.rows[0];
+        console.log("User updated successfully:", user);
         
         return new Response(JSON.stringify({
           username: user.username,
@@ -211,6 +224,13 @@ export const handler: Handlers = {
       }
     } catch (error) {
       console.error("Error updating user profile:", error);
+      // Log more details about the error
+      if (error instanceof Error) {
+        console.error("Error name:", error.name);
+        console.error("Error message:", error.message);
+        console.error("Error stack:", error.stack);
+      }
+      
       return new Response(JSON.stringify({ message: "Internal server error" }), {
         status: 500,
         headers: { "Content-Type": "application/json" },

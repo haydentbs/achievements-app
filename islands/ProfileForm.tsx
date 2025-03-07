@@ -10,7 +10,7 @@ interface ProfileData {
 }
 
 export default function ProfileForm() {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
@@ -36,7 +36,7 @@ export default function ProfileForm() {
     }
   }, [user]);
 
-  const handleChange = (e: Event) => {
+  const handleChange = (e: any) => {
     const target = e.target as HTMLInputElement;
     setProfileData({
       ...profileData,
@@ -44,29 +44,31 @@ export default function ProfileForm() {
     });
   };
 
-  const handleSubmit = async (e: Event) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     setLoading(true);
     setSuccess(false);
     setError("");
     
     console.log("Submitting profile update...");
+    console.log("Profile data being submitted:", profileData);
 
     try {
-      // Get token from localStorage
-      const token = localStorage.getItem("authToken");
-      console.log("Auth token from localStorage:", !!token);
+      // Get token from context first, then fallback to localStorage
+      const authToken = token || localStorage.getItem("authToken");
+      console.log("Auth token available:", !!authToken);
       
-      if (!token) {
+      if (!authToken) {
         throw new Error("You are not authenticated. Please log in again.");
       }
       
       // Make an API call to update the profile
+      console.log("Making API call to update profile...");
       const response = await fetch("/api/users/profile", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${authToken}`
         },
         body: JSON.stringify({
           full_name: profileData.full_name,
@@ -76,22 +78,31 @@ export default function ProfileForm() {
         credentials: 'include', // Include cookies in the request
       });
 
+      console.log("API response status:", response.status);
+      
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorText = await response.text();
+        console.error("Error response text:", errorText);
+        
+        let errorData;
+        try {
+          errorData = JSON.parse(errorText);
+        } catch (e) {
+          console.error("Failed to parse error response as JSON:", e);
+          throw new Error(`Server error: ${response.status} ${response.statusText}`);
+        }
+        
         throw new Error(errorData.message || "Failed to update profile");
       }
 
       // Update the profile data with the response
       const updatedData = await response.json();
+      console.log("Profile updated successfully:", updatedData);
+      
       setProfileData({
         ...profileData,
         ...updatedData,
       });
-      
-      // Update the auth context with the new profile image
-      if (user) {
-        user.profile_image_url = profileData.profile_image_url;
-      }
       
       setSuccess(true);
     } catch (err) {
@@ -102,12 +113,28 @@ export default function ProfileForm() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("user");
+    window.location.href = "/login";
+  };
+
   if (loading && !profileData.username) {
     return <div className="text-center py-4">Loading profile data...</div>;
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="mb-4">
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="text-sm text-orange-500 hover:text-orange-700"
+        >
+          Having trouble? Click here to log out and log in again
+        </button>
+      </div>
+
       <div>
         <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
         <input
