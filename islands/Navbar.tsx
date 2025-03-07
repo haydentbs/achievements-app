@@ -1,9 +1,22 @@
 import { JSX } from "preact";
-import { useAuth } from "../islands/AuthContext.tsx";
+import { useAuth } from "./AuthContext.tsx";
+import { useEffect, useState } from "preact/hooks";
 
 export function Navbar(): JSX.Element {
   // Get auth context
   const { isAuthenticated, user, logout } = useAuth();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Debug
+  useEffect(() => {
+    if (isClient) {
+      console.log("Navbar auth state:", { isAuthenticated, user });
+    }
+  }, [isAuthenticated, user, isClient]);
   
   return (
     <nav class="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
@@ -20,10 +33,12 @@ export function Navbar(): JSX.Element {
       </div>
       
       <div class="hidden md:flex space-x-8">
-        <button class="text-sm text-gray-600">
-          {isAuthenticated ? "Authenticated" : "Not Authenticated"}
-        </button>
-        {isAuthenticated ? (
+        {isClient && (
+          <button class="text-sm text-gray-600">
+            {isAuthenticated ? "Authenticated" : "Not Authenticated"}
+          </button>
+        )}
+        {isClient && isAuthenticated ? (
           <>
             <a href="/dashboard" class="text-gray-800 hover:text-orange-500">Dashboard</a>
             <a href="/goals" class="text-gray-800 hover:text-orange-500">Goals</a>
@@ -39,7 +54,7 @@ export function Navbar(): JSX.Element {
       </div>
       
       <div class="flex items-center space-x-4">
-        {isAuthenticated ? (
+        {isClient && isAuthenticated ? (
           <>
             <span class="text-gray-800 font-medium">{user?.username}</span>
             <button class="ml-4 text-gray-800 hover:text-orange-500" aria-label="Notifications">
@@ -77,4 +92,4 @@ export function Navbar(): JSX.Element {
       </div>
     </nav>
   );
-}
+} 

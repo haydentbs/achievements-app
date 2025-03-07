@@ -1,8 +1,9 @@
 import { Head } from "$fresh/runtime.ts";
+import ProtectedRoute from "../islands/ProtectedRoute.tsx";
 
 export default function Dashboard() {
   return (
-    <>
+    <ProtectedRoute>
       <Head>
         <title>Dashboard - MilestoneTracker</title>
       </Head>
@@ -46,6 +47,6 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-    </>
+    </ProtectedRoute>
   );
 }

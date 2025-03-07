@@ -1,1 +1,7 @@
- 
+# Deno files
+.env
+deno.lock
+fresh.gen.ts
+
+# Aider files
+.aider*
