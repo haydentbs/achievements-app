@@ -20,6 +20,9 @@ export function Navbar(): JSX.Element {
       </div>
       
       <div class="hidden md:flex space-x-8">
+        <button class="text-sm text-gray-600">
+          {isAuthenticated ? "Authenticated" : "Not Authenticated"}
+        </button>
         {isAuthenticated ? (
           <>
             <a href="/dashboard" class="text-gray-800 hover:text-orange-500">Dashboard</a>
