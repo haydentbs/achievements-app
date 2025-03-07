@@ -79,6 +79,7 @@ export function AuthProvider({ children }: { children: preact.ComponentChildren 
       // Store in localStorage
       localStorage.setItem("authToken", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
+      setIsAuthenticated(true);
     } finally {
       setIsLoading(false);
     }
