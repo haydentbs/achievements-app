@@ -49,23 +49,15 @@ export default function ProfileForm() {
     setLoading(true);
     setSuccess(false);
     setError("");
+    
+    console.log("Submitting profile update...");
 
     try {
-      // Get the auth token from cookies
-      const cookies = document.cookie.split(';');
-      const authCookie = cookies.find(cookie => cookie.trim().startsWith('auth='));
-      const authToken = authCookie ? authCookie.trim().substring(5) : '';
-      
-      if (!authToken) {
-        throw new Error("You are not authenticated. Please log in again.");
-      }
-      
       // Make an API call to update the profile
       const response = await fetch("/api/users/profile", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${authToken}`
         },
         body: JSON.stringify({
           full_name: profileData.full_name,
@@ -95,7 +87,7 @@ export default function ProfileForm() {
       setSuccess(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An unknown error occurred");
-      console.error(err);
+      console.error("Profile update error:", err);
     } finally {
       setLoading(false);
     }

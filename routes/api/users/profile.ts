@@ -10,20 +10,27 @@ export const handler: Handlers = {
     const cookie = req.headers.get("Cookie") || "";
     
     try {
-      // Extract token from Authorization header or cookie
+      console.log("Profile API - PUT request received");
+      console.log("Auth header present:", !!authHeader);
+      console.log("Cookie header present:", !!cookie);
+      console.log("Profile API - GET request received");
+      console.log("Auth header present:", !!authHeader);
+      console.log("Cookie header present:", !!cookie);
+      // Extract token from cookie (primary) or Authorization header (fallback)
       let token = "";
-      if (authHeader.startsWith("Bearer ")) {
+      
+      // First try to get from cookie
+      const match = cookie.match(/auth=([^;]+)/);
+      if (match) {
+        token = match[1];
+      } 
+      // Fallback to Authorization header
+      else if (authHeader.startsWith("Bearer ")) {
         token = authHeader.substring(7);
-      } else {
-        // Try to get from cookie
-        const match = cookie.match(/auth=([^;]+)/);
-        if (match) {
-          token = match[1];
-        }
       }
       
       if (!token) {
-        return new Response(JSON.stringify({ message: "Unauthorized" }), {
+        return new Response(JSON.stringify({ message: "Unauthorized - No valid token found" }), {
           status: 401,
           headers: { "Content-Type": "application/json" },
         });
@@ -94,20 +101,21 @@ export const handler: Handlers = {
     const cookie = req.headers.get("Cookie") || "";
     
     try {
-      // Extract token from Authorization header or cookie
+      // Extract token from cookie (primary) or Authorization header (fallback)
       let token = "";
-      if (authHeader.startsWith("Bearer ")) {
+      
+      // First try to get from cookie
+      const match = cookie.match(/auth=([^;]+)/);
+      if (match) {
+        token = match[1];
+      } 
+      // Fallback to Authorization header
+      else if (authHeader.startsWith("Bearer ")) {
         token = authHeader.substring(7);
-      } else {
-        // Try to get from cookie
-        const match = cookie.match(/auth=([^;]+)/);
-        if (match) {
-          token = match[1];
-        }
       }
       
       if (!token) {
-        return new Response(JSON.stringify({ message: "Unauthorized" }), {
+        return new Response(JSON.stringify({ message: "Unauthorized - No valid token found" }), {
           status: 401,
           headers: { "Content-Type": "application/json" },
         });
