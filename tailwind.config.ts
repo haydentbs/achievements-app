@@ -1,7 +1,9 @@
-import { Options } from "$fresh/plugins/twind.ts";
+import { type Config } from "tailwindcss";
 
 export default {
-  selfURL: import.meta.url,
+  content: [
+    "{routes,islands,components}/**/*.{ts,tsx}",
+  ],
   theme: {
     extend: {
       colors: {
@@ -20,4 +22,4 @@ export default {
       },
     },
   },
-} as Options;
+} satisfies Config;
