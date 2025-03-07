@@ -20,11 +20,15 @@ export const handler: Handlers = {
       console.log("Cookie header:", cookie);
       
       // First try to get from cookie
-      const match = cookie.match(/auth=([^;]+)/);
-      if (match) {
-        token = match[1];
-        console.log("Found token in cookie");
-      } 
+      const cookieParts = cookie.split(';');
+      for (const part of cookieParts) {
+        const trimmed = part.trim();
+        if (trimmed.startsWith('auth=')) {
+          token = trimmed.substring(5);
+          console.log("Found token in cookie:", token.substring(0, 10) + "...");
+          break;
+        }
+      }
       // Fallback to Authorization header
       else if (authHeader && authHeader.startsWith("Bearer ")) {
         token = authHeader.substring(7);
@@ -114,11 +118,15 @@ export const handler: Handlers = {
       let token = "";
       
       // First try to get from cookie
-      const match = cookie.match(/auth=([^;]+)/);
-      if (match) {
-        token = match[1];
-        console.log("Found token in cookie");
-      } 
+      const cookieParts = cookie.split(';');
+      for (const part of cookieParts) {
+        const trimmed = part.trim();
+        if (trimmed.startsWith('auth=')) {
+          token = trimmed.substring(5);
+          console.log("Found token in cookie:", token.substring(0, 10) + "...");
+          break;
+        }
+      }
       // Fallback to Authorization header
       else if (authHeader && authHeader.startsWith("Bearer ")) {
         token = authHeader.substring(7);
