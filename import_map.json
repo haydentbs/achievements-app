@@ -8,6 +8,10 @@
     "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.0",
     "tailwindcss": "npm:tailwindcss@3.3.5",
     "tailwindcss/": "npm:/tailwindcss@3.3.5/",
-    "tailwindcss/plugin": "npm:/tailwindcss@3.3.5/plugin.js"
+    "tailwindcss/plugin": "npm:/tailwindcss@3.3.5/plugin.js",
+    "postgres": "https://deno.land/x/postgres@v0.17.0/mod.ts",
+    "djwt": "https://deno.land/x/djwt@v2.8/mod.ts",
+    "bcrypt": "https://deno.land/x/bcrypt@v0.4.1/mod.ts",
+    "oak": "https://deno.land/x/oak@v12.6.1/mod.ts"
   }
 }
