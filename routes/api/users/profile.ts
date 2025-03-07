@@ -10,24 +10,28 @@ export const handler: Handlers = {
     const cookie = req.headers.get("Cookie") || "";
     
     try {
-      console.log("Profile API - PUT request received");
-      console.log("Auth header present:", !!authHeader);
-      console.log("Cookie header present:", !!cookie);
       console.log("Profile API - GET request received");
       console.log("Auth header present:", !!authHeader);
       console.log("Cookie header present:", !!cookie);
+      console.log("Cookie header:", cookie);
       // Extract token from cookie (primary) or Authorization header (fallback)
       let token = "";
+      
+      console.log("Cookie header:", cookie);
       
       // First try to get from cookie
       const match = cookie.match(/auth=([^;]+)/);
       if (match) {
         token = match[1];
+        console.log("Found token in cookie");
       } 
       // Fallback to Authorization header
-      else if (authHeader.startsWith("Bearer ")) {
+      else if (authHeader && authHeader.startsWith("Bearer ")) {
         token = authHeader.substring(7);
+        console.log("Found token in Authorization header");
       }
+      
+      console.log("Token found:", !!token);
       
       if (!token) {
         return new Response(JSON.stringify({ message: "Unauthorized - No valid token found" }), {
@@ -101,6 +105,11 @@ export const handler: Handlers = {
     const cookie = req.headers.get("Cookie") || "";
     
     try {
+      console.log("Profile API - PUT request received");
+      console.log("Auth header present:", !!authHeader);
+      console.log("Cookie header present:", !!cookie);
+      console.log("Cookie header:", cookie);
+      
       // Extract token from cookie (primary) or Authorization header (fallback)
       let token = "";
       
@@ -108,11 +117,15 @@ export const handler: Handlers = {
       const match = cookie.match(/auth=([^;]+)/);
       if (match) {
         token = match[1];
+        console.log("Found token in cookie");
       } 
       // Fallback to Authorization header
-      else if (authHeader.startsWith("Bearer ")) {
+      else if (authHeader && authHeader.startsWith("Bearer ")) {
         token = authHeader.substring(7);
+        console.log("Found token in Authorization header");
       }
+      
+      console.log("Token found:", !!token);
       
       if (!token) {
         return new Response(JSON.stringify({ message: "Unauthorized - No valid token found" }), {

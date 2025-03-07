@@ -53,6 +53,8 @@ export default function ProfileForm() {
     console.log("Submitting profile update...");
 
     try {
+      console.log("Auth cookie:", document.cookie);
+      
       // Make an API call to update the profile
       const response = await fetch("/api/users/profile", {
         method: "PUT",
