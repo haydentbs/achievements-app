@@ -56,6 +56,7 @@ export function AuthProvider({ children }: { children: preact.ComponentChildren 
   }, []);
 
   const login = async (email: string, password: string) => {
+    console.log("Attempting to log in with email:", email);
     setIsLoading(true);
 
     try {
@@ -68,6 +69,7 @@ export function AuthProvider({ children }: { children: preact.ComponentChildren 
       });
 
       const data = await response.json();
+      console.log("Login response data:", data);
 
       if (!response.ok) {
         throw new Error(data.error || "Failed to login");
@@ -79,7 +81,10 @@ export function AuthProvider({ children }: { children: preact.ComponentChildren 
       // Store in localStorage
       localStorage.setItem("authToken", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
+      console.log("User authenticated, updating state.");
       setIsAuthenticated(true);
+    } catch (error) {
+      console.error("Login error:", error);
     } finally {
       setIsLoading(false);
     }
