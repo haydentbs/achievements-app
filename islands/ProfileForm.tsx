@@ -51,16 +51,30 @@ export default function ProfileForm() {
     setError("");
 
     try {
-      // For now, we'll just simulate a successful update
-      // In a real app, you would make an API call to update the profile
-      console.log("Profile data to update:", {
-        full_name: profileData.full_name,
-        bio: profileData.bio,
-        profile_image_url: profileData.profile_image_url,
+      // Make an API call to update the profile
+      const response = await fetch("/api/users/profile", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          full_name: profileData.full_name,
+          bio: profileData.bio,
+          profile_image_url: profileData.profile_image_url,
+        }),
       });
-      
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 500));
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to update profile");
+      }
+
+      // Update the profile data with the response
+      const updatedData = await response.json();
+      setProfileData({
+        ...profileData,
+        ...updatedData,
+      });
       
       setSuccess(true);
     } catch (err) {
@@ -129,14 +143,33 @@ export default function ProfileForm() {
 
       <div>
         <label htmlFor="profile_image_url" className="block text-sm font-medium text-gray-700">Profile Image URL</label>
-        <input
-          type="text"
-          id="profile_image_url"
-          name="profile_image_url"
-          value={profileData.profile_image_url}
-          onChange={handleChange}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500"
-        />
+        <div className="flex space-x-4">
+          <div className="flex-1">
+            <input
+              type="text"
+              id="profile_image_url"
+              name="profile_image_url"
+              value={profileData.profile_image_url}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500"
+            />
+          </div>
+          <div className="mt-1">
+            <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200">
+              <img 
+                src={profileData.profile_image_url || `https://ui-avatars.com/api/?name=${profileData.username || 'User'}&background=random`}
+                alt="Profile preview"
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.onerror = null;
+                  target.src = "https://placehold.co/48x48/orange/white?text=User";
+                }}
+              />
+            </div>
+          </div>
+        </div>
+        <p className="mt-1 text-xs text-gray-500">Enter a URL for your profile image</p>
       </div>
 
       {error && (
