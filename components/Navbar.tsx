@@ -20,12 +20,17 @@ export function Navbar(): JSX.Element {
       </div>
       
       <div class="hidden md:flex space-x-8">
-        {isAuthenticated && (
+        {isAuthenticated ? (
           <>
             <a href="/dashboard" class="text-gray-800 hover:text-orange-500">Dashboard</a>
             <a href="/goals" class="text-gray-800 hover:text-orange-500">Goals</a>
             <a href="/achievements" class="text-gray-800 hover:text-orange-500">Achievements</a>
             <a href="/community" class="text-gray-800 hover:text-orange-500">Community</a>
+          </>
+        ) : (
+          <>
+            <a href="/login" class="text-gray-800 hover:text-orange-500">Login</a>
+            <a href="/register" class="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600">Sign Up</a>
           </>
         )}
       </div>
