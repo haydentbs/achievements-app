@@ -1,10 +1,11 @@
 import { Head } from "$fresh/runtime.ts";
+import { h, Fragment } from "preact";
 import LoginForm from "../islands/LoginForm.tsx";
 import LoginRedirect from "../islands/LoginRedirect.tsx";
 
 export default function Login() {
   return (
-    <>
+    <Fragment>
       <Head>
         <title>Login - MilestoneTracker</title>
       </Head>
@@ -21,6 +22,6 @@ export default function Login() {
           <LoginRedirect />
         </div>
       </div>
-    </>
+    </Fragment>
   );
 }

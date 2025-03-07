@@ -33,22 +33,51 @@ const AuthContext = createContext<AuthContextType>({
 export function AuthProvider({ children }: { children: preact.ComponentChildren }) {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Function to check if token is valid (not expired)
+  const isTokenValid = (token: string): boolean => {
+    try {
+      // JWT tokens are in format: header.payload.signature
+      const parts = token.split('.');
+      if (parts.length !== 3) return false;
+      
+      // Decode the payload
+      const payload = JSON.parse(atob(parts[1]));
+      
+      // Check if token is expired
+      const exp = payload.exp * 1000; // Convert to milliseconds
+      return Date.now() < exp;
+    } catch (e) {
+      console.error("Error validating token:", e);
+      return false;
+    }
+  };
 
   useEffect(() => {
     // Check if user is logged in on component mount
     const storedToken = localStorage.getItem("authToken");
     const storedUser = localStorage.getItem("user");
 
+    console.log("AuthProvider init:", { storedToken: !!storedToken, storedUser: !!storedUser });
+
     if (storedToken && storedUser) {
-      setToken(storedToken);
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (e) {
-        console.error("Failed to parse stored user:", e);
-        localStorage.removeItem("user");
+      // Validate token before setting it
+      if (isTokenValid(storedToken)) {
+        setToken(storedToken);
+        try {
+          const parsedUser = JSON.parse(storedUser);
+          setUser(parsedUser);
+          console.log("User authenticated from localStorage:", parsedUser);
+        } catch (e) {
+          console.error("Failed to parse stored user:", e);
+          localStorage.removeItem("user");
+          localStorage.removeItem("authToken");
+        }
+      } else {
+        console.log("Stored token is invalid or expired, clearing auth state");
         localStorage.removeItem("authToken");
+        localStorage.removeItem("user");
       }
     }
 
@@ -81,10 +110,10 @@ export function AuthProvider({ children }: { children: preact.ComponentChildren 
       // Store in localStorage
       localStorage.setItem("authToken", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
-      console.log("User authenticated, updating state.");
-      setIsAuthenticated(true);
+      console.log("User authenticated, token set:", data.token.substring(0, 10) + "...");
     } catch (error) {
       console.error("Login error:", error);
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -120,7 +149,6 @@ export function AuthProvider({ children }: { children: preact.ComponentChildren 
   };
 
   const logout = () => {
-    setIsAuthenticated(false);
     setToken(null);
     setUser(null);
     localStorage.removeItem("authToken");

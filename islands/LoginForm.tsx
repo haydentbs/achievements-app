@@ -14,10 +14,13 @@ export default function LoginForm() {
     setIsLoading(true);
 
     try {
+      console.log("LoginForm: Attempting to log in with email:", email);
       await login(email, password);
-      // Redirect will be handled by the auth context
+      console.log("LoginForm: Login successful, redirect should happen via LoginRedirect");
+      // Redirect will be handled by the LoginRedirect component
     } catch (err) {
-      setError(err.message);
+      console.error("LoginForm: Login error:", err);
+      setError(err.message || "Failed to login. Please check your credentials.");
       setIsLoading(false);
     }
   };

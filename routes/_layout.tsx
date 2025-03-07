@@ -1,7 +1,7 @@
 import { PageProps } from "$fresh/server.ts";
-import { Navbar } from "../components/Navbar.tsx";
 import { Head } from "$fresh/runtime.ts";
 import { AuthProvider } from "../islands/AuthContext.tsx";
+import { Navbar } from "../islands/Navbar.tsx";
 
 export default function Layout({ Component }: PageProps) {
   return (
