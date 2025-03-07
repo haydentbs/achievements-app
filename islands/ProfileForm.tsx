@@ -51,17 +51,28 @@ export default function ProfileForm() {
     setError("");
 
     try {
+      // Get the auth token from cookies
+      const cookies = document.cookie.split(';');
+      const authCookie = cookies.find(cookie => cookie.trim().startsWith('auth='));
+      const authToken = authCookie ? authCookie.trim().substring(5) : '';
+      
+      if (!authToken) {
+        throw new Error("You are not authenticated. Please log in again.");
+      }
+      
       // Make an API call to update the profile
       const response = await fetch("/api/users/profile", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${authToken}`
         },
         body: JSON.stringify({
           full_name: profileData.full_name,
           bio: profileData.bio,
           profile_image_url: profileData.profile_image_url,
         }),
+        credentials: 'include', // Include cookies in the request
       });
 
       if (!response.ok) {
@@ -75,6 +86,11 @@ export default function ProfileForm() {
         ...profileData,
         ...updatedData,
       });
+      
+      // Update the auth context with the new profile image
+      if (user) {
+        user.profile_image_url = profileData.profile_image_url;
+      }
       
       setSuccess(true);
     } catch (err) {
