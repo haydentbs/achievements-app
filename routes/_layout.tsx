@@ -1,6 +1,7 @@
 import { PageProps } from "$fresh/server.ts";
 import { Navbar } from "../components/Navbar.tsx";
 import { Head } from "$fresh/runtime.ts";
+import { AuthProvider } from "../islands/AuthContext.tsx";
 
 export default function Layout({ Component }: PageProps) {
   return (
@@ -11,12 +12,14 @@ export default function Layout({ Component }: PageProps) {
         <title>MilestoneTracker</title>
         <link rel="stylesheet" href="/styles.css" />
       </Head>
-      <div class="min-h-screen bg-gray-50">
-        <Navbar />
-        <main class="container mx-auto px-4 py-6">
-          <Component />
-        </main>
-      </div>
+      <AuthProvider>
+        <div class="min-h-screen bg-gray-50">
+          <Navbar />
+          <main class="container mx-auto px-4 py-6">
+            <Component />
+          </main>
+        </div>
+      </AuthProvider>
     </>
   );
 }

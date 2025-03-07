@@ -1,8 +1,12 @@
 import { JSX } from "preact";
+import { useAuth } from "../islands/AuthContext.tsx";
 
 export function Navbar(): JSX.Element {
+  // Get auth context
+  const { isAuthenticated, user, logout } = useAuth();
+  
   return (
-    <nav class="flex items-center justify-between p-4 border-b border-gray-200">
+    <nav class="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
       <div class="flex items-center">
         <a href="/" class="flex items-center">
           <span class="text-orange-500 mr-2">
@@ -16,30 +20,51 @@ export function Navbar(): JSX.Element {
       </div>
       
       <div class="hidden md:flex space-x-8">
-        <a href="/dashboard" class="text-gray-800 hover:text-orange-500">Dashboard</a>
-        <a href="/goals" class="text-gray-800 hover:text-orange-500">Goals</a>
-        <a href="/achievements" class="text-gray-800 hover:text-orange-500">Achievements</a>
-        <a href="/community" class="text-gray-800 hover:text-orange-500">Community</a>
+        {isAuthenticated && (
+          <>
+            <a href="/dashboard" class="text-gray-800 hover:text-orange-500">Dashboard</a>
+            <a href="/goals" class="text-gray-800 hover:text-orange-500">Goals</a>
+            <a href="/achievements" class="text-gray-800 hover:text-orange-500">Achievements</a>
+            <a href="/community" class="text-gray-800 hover:text-orange-500">Community</a>
+          </>
+        )}
       </div>
       
       <div class="flex items-center space-x-4">
-        <button class="text-gray-800 hover:text-orange-500" aria-label="Notifications">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 22C13.1 22 14 21.1 14 20H10C10 21.1 10.9 22 12 22ZM18 16V11C18 7.93 16.36 5.36 13.5 4.68V4C13.5 3.17 12.83 2.5 12 2.5C11.17 2.5 10.5 3.17 10.5 4V4.68C7.63 5.36 6 7.92 6 11V16L4 18V19H20V18L18 16Z" fill="currentColor"/>
-          </svg>
-        </button>
-        <div class="w-10 h-10 rounded-full bg-gray-200 overflow-hidden">
-          <img 
-            src="https://ui-avatars.com/api/?name=User&background=random" 
-            alt="User profile"
-            class="w-full h-full object-cover"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.onerror = null;
-              target.src = "https://placehold.co/40x40/orange/white?text=User";
-            }}
-          />
-        </div>
+        {isAuthenticated ? (
+          <>
+            <button class="text-gray-800 hover:text-orange-500" aria-label="Notifications">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 22C13.1 22 14 21.1 14 20H10C10 21.1 10.9 22 12 22ZM18 16V11C18 7.93 16.36 5.36 13.5 4.68V4C13.5 3.17 12.83 2.5 12 2.5C11.17 2.5 10.5 3.17 10.5 4V4.68C7.63 5.36 6 7.92 6 11V16L4 18V19H20V18L18 16Z" fill="currentColor"/>
+              </svg>
+            </button>
+            <div class="relative flex items-center">
+              <div class="w-10 h-10 rounded-full bg-gray-200 overflow-hidden">
+                <img 
+                  src={user?.profile_image_url || `https://ui-avatars.com/api/?name=${user?.username || 'User'}&background=random`}
+                  alt="User profile"
+                  class="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.onerror = null;
+                    target.src = "https://placehold.co/40x40/orange/white?text=User";
+                  }}
+                />
+              </div>
+              <button 
+                onClick={logout}
+                class="ml-2 text-sm text-gray-600 hover:text-orange-500"
+              >
+                Logout
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <a href="/login" class="text-gray-800 hover:text-orange-500">Login</a>
+            <a href="/register" class="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600">Sign Up</a>
+          </>
+        )}
       </div>
     </nav>
   );
