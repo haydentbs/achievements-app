@@ -1,6 +1,6 @@
 import { Handlers } from "$fresh/server.ts";
-import db from "./db/index.ts"; // Import the new db route
+import * as db from "./db/index.ts"; // Import the new db route
 
 export const handler: Handlers = {
-  ...db, // Add the db route to the existing handlers
+  ...db.handler, // Add the db route to the existing handlers
 };
