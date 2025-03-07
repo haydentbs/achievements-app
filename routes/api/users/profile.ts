@@ -29,8 +29,9 @@ export const handler: Handlers = {
           break;
         }
       }
+      
       // Fallback to Authorization header
-      else if (authHeader && authHeader.startsWith("Bearer ")) {
+      if (!token && authHeader && authHeader.startsWith("Bearer ")) {
         token = authHeader.substring(7);
         console.log("Found token in Authorization header");
       }
@@ -127,8 +128,9 @@ export const handler: Handlers = {
           break;
         }
       }
+      
       // Fallback to Authorization header
-      else if (authHeader && authHeader.startsWith("Bearer ")) {
+      if (!token && authHeader && authHeader.startsWith("Bearer ")) {
         token = authHeader.substring(7);
         console.log("Found token in Authorization header");
       }
