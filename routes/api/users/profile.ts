@@ -115,24 +115,25 @@ export const handler: Handlers = {
       console.log("Cookie header present:", !!cookie);
       console.log("Cookie header:", cookie);
       
-      // Extract token from cookie (primary) or Authorization header (fallback)
+      // Extract token from Authorization header (primary) or cookie (fallback)
       let token = "";
       
-      // First try to get from cookie
-      const cookieParts = cookie.split(';');
-      for (const part of cookieParts) {
-        const trimmed = part.trim();
-        if (trimmed.startsWith('auth=')) {
-          token = trimmed.substring(5);
-          console.log("Found token in cookie:", token.substring(0, 10) + "...");
-          break;
-        }
-      }
-      
-      // Fallback to Authorization header
-      if (!token && authHeader && authHeader.startsWith("Bearer ")) {
+      // First try Authorization header
+      if (authHeader && authHeader.startsWith("Bearer ")) {
         token = authHeader.substring(7);
         console.log("Found token in Authorization header");
+      }
+      // Fallback to cookie
+      else {
+        const cookieParts = cookie.split(';');
+        for (const part of cookieParts) {
+          const trimmed = part.trim();
+          if (trimmed.startsWith('auth=')) {
+            token = trimmed.substring(5);
+            console.log("Found token in cookie:", token.substring(0, 10) + "...");
+            break;
+          }
+        }
       }
       
       console.log("Token found:", !!token);

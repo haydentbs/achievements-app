@@ -53,20 +53,20 @@ export default function ProfileForm() {
     console.log("Submitting profile update...");
 
     try {
-      console.log("Auth cookie:", document.cookie);
-      console.log("Cookie parts:", document.cookie.split(';').map(c => c.trim()));
+      // Get token from localStorage
+      const token = localStorage.getItem("authToken");
+      console.log("Auth token from localStorage:", !!token);
+      
+      if (!token) {
+        throw new Error("You are not authenticated. Please log in again.");
+      }
       
       // Make an API call to update the profile
       const response = await fetch("/api/users/profile", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          // Add Authorization header as a fallback
-          ...(document.cookie.includes('auth=') && {
-            "Authorization": `Bearer ${document.cookie.split(';')
-              .find(c => c.trim().startsWith('auth='))
-              ?.trim().substring(5) || ''}`
-          })
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
           full_name: profileData.full_name,

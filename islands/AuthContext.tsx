@@ -84,6 +84,18 @@ export function AuthProvider({ children }: { children: preact.ComponentChildren 
     setIsLoading(false);
   }, []);
 
+  // Helper function to set a cookie
+  const setCookie = (name: string, value: string, days: number) => {
+    const expires = new Date();
+    expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+    document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
+  };
+
+  // Helper function to delete a cookie
+  const deleteCookie = (name: string) => {
+    document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+  };
+
   const login = async (email: string, password: string) => {
     console.log("Attempting to log in with email:", email);
     setIsLoading(true);
@@ -110,6 +122,10 @@ export function AuthProvider({ children }: { children: preact.ComponentChildren 
       // Store in localStorage
       localStorage.setItem("authToken", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
+      
+      // Also store in cookie for API requests
+      setCookie("auth", data.token, 7); // 7 days expiration
+      
       console.log("User authenticated, token set:", data.token.substring(0, 10) + "...");
     } catch (error) {
       console.error("Login error:", error);
@@ -153,6 +169,7 @@ export function AuthProvider({ children }: { children: preact.ComponentChildren 
     setUser(null);
     localStorage.removeItem("authToken");
     localStorage.removeItem("user");
+    deleteCookie("auth");
     window.location.href = "/login";
   };
 
