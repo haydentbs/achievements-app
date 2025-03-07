@@ -1,7 +1,7 @@
 import { Handlers } from "$fresh/server.ts";
 import { pool } from "../../../db/client.ts";
 import { UpdateUserInput } from "../../../models/user.ts";
-import { verifyJwt } from "../../../utils/auth.ts";
+import { verifyToken } from "../../../utils/auth.ts";
 
 export const handler: Handlers = {
   async GET(req) {
@@ -30,7 +30,7 @@ export const handler: Handlers = {
       }
       
       // Verify the token
-      const payload = await verifyJwt(token);
+      const payload = await verifyToken(token);
       if (!payload || !payload.sub) {
         return new Response(JSON.stringify({ message: "Invalid token" }), {
           status: 401,
@@ -114,7 +114,7 @@ export const handler: Handlers = {
       }
       
       // Verify the token
-      const payload = await verifyJwt(token);
+      const payload = await verifyToken(token);
       if (!payload || !payload.sub) {
         return new Response(JSON.stringify({ message: "Invalid token" }), {
           status: 401,

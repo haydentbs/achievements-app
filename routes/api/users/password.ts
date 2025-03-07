@@ -1,6 +1,6 @@
 import { Handlers } from "$fresh/server.ts";
 import { pool } from "../../../db/client.ts";
-import { verifyJwt } from "../../../utils/auth.ts";
+import { verifyToken } from "../../../utils/auth.ts";
 import * as bcrypt from "https://deno.land/x/bcrypt@v0.4.1/mod.ts";
 
 export const handler: Handlers = {
@@ -30,7 +30,7 @@ export const handler: Handlers = {
       }
       
       // Verify the token
-      const payload = await verifyJwt(token);
+      const payload = await verifyToken(token);
       if (!payload || !payload.sub) {
         return new Response(JSON.stringify({ message: "Invalid token" }), {
           status: 401,

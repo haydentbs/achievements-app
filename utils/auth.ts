@@ -55,6 +55,11 @@ export async function verifyToken(token: string): Promise<any> {
 }
 
 /**
+ * Alias for verifyToken to maintain compatibility with existing code
+ */
+export const verifyJwt = verifyToken;
+
+/**
  * Authentication middleware for Fresh
  */
 export async function authMiddleware(req: Request, ctx: any) {
