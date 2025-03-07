@@ -27,7 +27,18 @@ export function MilestoneCard({
     <div class="bg-white p-6 rounded-lg shadow-sm mb-6">
       <div class="flex justify-between items-center mb-4">
         <div class="flex items-center">
-          <div class="w-10 h-10 rounded-full bg-gray-200 mr-3"></div>
+          <div class="w-10 h-10 rounded-full bg-gray-200 mr-3 overflow-hidden">
+            <img 
+              src={`https://ui-avatars.com/api/?name=${encodeURIComponent(author)}&background=random`} 
+              alt={author}
+              class="w-full h-full object-cover"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.onerror = null;
+                target.src = "https://placehold.co/40x40/orange/white?text=User";
+              }}
+            />
+          </div>
           <div>
             <h3 class="font-medium">{author}</h3>
             <p class="text-sm text-gray-500">{time}</p>
@@ -48,6 +59,19 @@ export function MilestoneCard({
         </span>
         <h2 class="text-xl font-bold mb-2">{title}</h2>
         <p class="text-gray-700">{description}</p>
+        
+        <div class="mt-4 rounded-lg overflow-hidden bg-gray-100">
+          <img 
+            src={`https://source.unsplash.com/400x200/?${encodeURIComponent(category.toLowerCase())}`}
+            alt={title}
+            class="w-full h-48 object-cover"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.onerror = null;
+              target.src = "/images/placeholder.svg";
+            }}
+          />
+        </div>
       </div>
       
       {badgeTitle && (
