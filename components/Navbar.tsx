@@ -59,7 +59,6 @@ export function Navbar(): JSX.Element {
               </button>
             </div>
           </>
-          </>
         ) : (
           <>
             <a href="/login" class="text-gray-800 hover:text-orange-500">Login</a>
