@@ -3,32 +3,35 @@
 - **Runtime:** Deno (secure and fast)
 - **Database:** Deno KV (for quick storage), PostgreSQL (for structured data)
 - **Authentication:** JWT-based authentication
-- **API Framework:** Fresh backend handlers
-- **AI Integration:** Modular AI services for achievement recommendations, insights, and chat support
+- **API Framework:** Fresh backend handlers and routes
+- **AI Integration:** Modular AI services for milestone recommendations and insights
 
 ### **Key Features**
 1. **User Management**
    - Authentication & authorization (OAuth2, JWT handling)
    - Profile management & privacy settings
+   - Notification preferences
 
-2. **Achievement Storage & Retrieval**
-   - User-created achievements (CRUD operations)
-   - Predefined achievement templates
-   - Progress tracking data
+2. **Milestone Storage & Retrieval**
+   - User-created milestones (CRUD operations)
+   - Predefined milestone templates and badges
+   - Progress tracking data (goals completed, in progress, total achieved)
 
 3. **Community & Social Backend**
-   - Friendships and group memberships
-   - Achievement feed & activity logs
-   - Likes, comments, and interactions
+   - Friendships and following system
+   - Achievement feed with filtering (Following, You, Discover)
+   - Likes, comments, and social interactions
+   - Activity tracking and timestamps
 
 4. **Analytics & Data Processing**
-   - Personal stats aggregation
-   - Global ranking calculations
-   - AI-generated insights (future feature)
+   - Personal progress aggregation (goals completed, in progress)
+   - Achievement categorization and badge assignment
+   - Milestone tracking and statistics
 
 5. **Notifications & Scheduling**
-   - Achievement reminders
-   - System notifications for milestones and streaks
+   - Milestone reminders
+   - Social interaction notifications (likes, comments)
+   - Achievement badge notifications
 
 ### **Backend Development Phases**
 1. **Database Schema & Models** (User, Achievements, Groups, Social interactions)

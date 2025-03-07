@@ -14,23 +14,26 @@
    - Leaderboards and progress insights
    - Responsive design for mobile and desktop
 
-2. **Achievement Logging & Management**
-   - Form-based input for logging achievements
-   - Goal-setting interface with progress tracking
-   - Privacy controls for achievements (public, private, friends-only)
+2. **Milestone Logging & Management**
+   - "Add Milestone" button for logging new achievements
+   - Goal-setting interface with progress tracking (shown as "12 In progress")
+   - Achievement categorization (Language, Travel, Reading, Skills)
+   - Privacy controls for milestones (public, private, friends-only)
 
 3. **Community & Social Features**
-   - Friend requests and group management
-   - Likes, comments, and reactions
-   - Challenge participation UI
+   - Achievement feed with social interactions
+   - Likes and comments on milestones (as shown in the UI)
+   - Badge system for milestone achievements (Language Enthusiast, etc.)
 
 4. **Analytics & Visualizations**
-   - Personalized progress charts
-   - Global comparison statistics
+   - Progress tracking (e.g., "4/10 Goals Completed")
+   - Milestone counters (e.g., "28 Total achieved")
+   - Achievement categorization and badges
 
-5. **Notifications & Reminders**
-   - UI for push/email notifications
-   - Streak tracking and reminders
+5. **Notifications & Profile**
+   - Notification bell in header
+   - User profile and settings
+   - Achievement history and milestone tracking
 
 ### **Frontend Development Phases**
 1. **Component Design & Prototyping** (Wireframing, UI components)
