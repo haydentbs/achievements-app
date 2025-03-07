@@ -1,21 +1,8 @@
 import { Head } from "$fresh/runtime.ts";
 import RegisterForm from "../islands/RegisterForm.tsx";
-import { useAuth } from "../islands/AuthContext.tsx";
-import { useEffect, useState } from "preact/hooks";
+import LoginRedirect from "../islands/LoginRedirect.tsx";
 
 export default function Register() {
-  const { isAuthenticated, isLoading } = useAuth();
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-    
-    // If authenticated and not loading, redirect to dashboard
-    if (isClient && isAuthenticated && !isLoading) {
-      window.location.href = "/dashboard";
-    }
-  }, [isAuthenticated, isLoading, isClient]);
-
   return (
     <>
       <Head>
@@ -31,6 +18,7 @@ export default function Register() {
           </div>
           
           <RegisterForm />
+          <LoginRedirect />
         </div>
       </div>
     </>

@@ -1,25 +1,17 @@
 import { Head } from "$fresh/runtime.ts";
-import { useEffect, useState } from "preact/hooks";
-import { useAuth } from "../islands/AuthContext.tsx";
+import { Handlers } from "$fresh/server.ts";
+import HomeRedirect from "../islands/HomeRedirect.tsx";
+
+export const handler: Handlers = {
+  GET(req, ctx) {
+    // Server-side redirect to login page
+    const url = new URL(req.url);
+    const redirectUrl = `${url.origin}/login`;
+    return Response.redirect(redirectUrl, 302);
+  },
+};
 
 export default function Home() {
-  const { isAuthenticated, isLoading } = useAuth();
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-    
-    if (isClient && !isLoading) {
-      if (isAuthenticated) {
-        // Redirect to dashboard if authenticated
-        window.location.href = "/dashboard";
-      } else {
-        // Redirect to login if not authenticated
-        window.location.href = "/login";
-      }
-    }
-  }, [isAuthenticated, isLoading, isClient]);
-
   return (
     <>
       <Head>
@@ -28,6 +20,7 @@ export default function Home() {
       </Head>
       <div class="flex justify-center items-center h-screen">
         <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
+        <HomeRedirect />
       </div>
     </>
   );
