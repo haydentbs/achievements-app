@@ -33,6 +33,7 @@ const AuthContext = createContext<AuthContextType>({
 export function AuthProvider({ children }: { children: preact.ComponentChildren }) {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -78,6 +79,8 @@ export function AuthProvider({ children }: { children: preact.ComponentChildren 
       // Store in localStorage
       localStorage.setItem("authToken", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
+      setIsAuthenticated(true);
+      setIsAuthenticated(true);
     } finally {
       setIsLoading(false);
     }
@@ -113,6 +116,7 @@ export function AuthProvider({ children }: { children: preact.ComponentChildren 
   };
 
   const logout = () => {
+    setIsAuthenticated(false);
     setToken(null);
     setUser(null);
     localStorage.removeItem("authToken");
