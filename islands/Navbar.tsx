@@ -56,14 +56,14 @@ export function Navbar(): JSX.Element {
       <div class="flex items-center space-x-4">
         {isClient && isAuthenticated ? (
           <>
-            <span class="text-gray-800 font-medium">{user?.username}</span>
+            <a href="/profile" class="text-gray-800 hover:text-orange-500 font-medium">{user?.username}</a>
             <button class="ml-4 text-gray-800 hover:text-orange-500" aria-label="Notifications">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 22C13.1 22 14 21.1 14 20H10C10 21.1 10.9 22 12 22ZM18 16V11C18 7.93 16.36 5.36 13.5 4.68V4C13.5 3.17 12.83 2.5 12 2.5C11.17 2.5 10.5 3.17 10.5 4V4.68C7.63 5.36 6 7.92 6 11V16L4 18V19H20V18L18 16Z" fill="currentColor"/>
               </svg>
             </button>
             <div class="relative flex items-center">
-              <div class="w-10 h-10 rounded-full bg-gray-200 overflow-hidden">
+              <a href="/profile" class="w-10 h-10 rounded-full bg-gray-200 overflow-hidden cursor-pointer hover:ring-2 hover:ring-orange-500">
                 <img 
                   src={user?.profile_image_url || `https://ui-avatars.com/api/?name=${user?.username || 'User'}&background=random`}
                   alt="User profile"
@@ -74,7 +74,7 @@ export function Navbar(): JSX.Element {
                     target.src = "https://placehold.co/40x40/orange/white?text=User";
                   }}
                 />
-              </div>
+              </a>
               <button 
                 onClick={logout}
                 class="ml-2 text-sm text-gray-600 hover:text-orange-500"
