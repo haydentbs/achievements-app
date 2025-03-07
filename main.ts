@@ -8,6 +8,5 @@ import { start } from "$fresh/server.ts";
 import manifest from "./fresh.gen.ts";
 
 import tailwind from "$fresh/plugins/tailwind.ts";
-import tailwindConfig from "./tailwind.config.ts";
 
 await start(manifest, { plugins: [tailwind()] });
