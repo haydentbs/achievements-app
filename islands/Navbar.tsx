@@ -28,7 +28,7 @@ export function Navbar(): JSX.Element {
               <path d="M12 3L4.5 10.5H7.5V16.5H16.5V10.5H19.5L12 3Z" fill="currentColor"/>
             </svg>
           </span>
-          <span class="text-xl font-bold">MilestoneTracker</span>
+          <span class="text-xl font-bold">Milestone Tracker</span>
         </a>
       </div>
       
